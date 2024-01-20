@@ -1,0 +1,18 @@
+runserver
+    "python manage.py runserver"
+
+migrate setting to open admin login page
+
+    "python manage.py migrate"
+
+create super user to login into admin page
+
+    "python manage.py createsuperuser"
+
+change password of super user
+
+    "python manage.py changepassword <<user name>>"
+
+crate app
+
+    "python manage.py createapp <<appname>>"
