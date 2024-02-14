@@ -16,3 +16,13 @@ def aboutUs(req):
 
 def contactUs(req):
     return render(req, 'myapp/contactus.html')
+
+def tracking(req):
+    track_list = ['ลุงวิศวกร - A1234',
+                  'สมหญิง - A1235',
+                  'สมชาย - A123'
+                  ]
+    
+    context = {'tracking':track_list}
+
+    return render(req, "myapp/tracking.html", context)
