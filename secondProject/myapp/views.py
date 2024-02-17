@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import Tracking
 
 # Create your views here.
 
@@ -18,11 +19,13 @@ def contactUs(req):
     return render(req, 'myapp/contactus.html')
 
 def tracking(req):
-    track_list = ['ลุงวิศวกร - A1234',
-                  'สมหญิง - A1235',
-                  'สมชาย - A123'
-                  ]
-    
+    # track_list = ['ลุงวิศวกร - A1234',
+    #               'สมหญิง - A1235',
+    #               'สมชาย - A1236'
+    #               ]
+
+    track_list = Tracking.objects.all()
+    print(track_list)
     context = {'tracking':track_list}
 
     return render(req, "myapp/tracking.html", context)

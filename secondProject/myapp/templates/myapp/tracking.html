@@ -6,7 +6,15 @@
 {% block content %}
     
     {% for t in tracking %}
-        <p>{{t}}</p><br>
+
+        {% if t.tracking == None %}
+            <p>name: {{t.name}} tracking: ยังไม่เริ่มจัดส่งสินค้า</p><br>
+
+        {% else %}
+            <p>name: {{t.name}} tracking: {{t.tracking}}</p><br>
+        {% endif %}
+
+        
     {% endfor %}
     
   
