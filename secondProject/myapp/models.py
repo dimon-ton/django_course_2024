@@ -11,3 +11,12 @@ class Tracking(models.Model):
 
     def __str__(self):
         return '{} - {} ({})'.format(self.name, self.tel, self.tracking)
+
+
+class Position(models.Model):
+    name = models.CharField(max_length=100)
+    positon = models.CharField(max_length=100)
+    salary = models.FloatField()
+
+    def __str__(self):
+        return 'name: {} - salary: {}'.format(self.name, self.salary)

@@ -13,6 +13,25 @@ change password of super user
 
     "python manage.py changepassword <<user name>>"
 
-crate app
+create app
 
     "python manage.py createapp <<appname>>"
+
+
+create models
+    "python manage.py makemigrations"
+    "python manage.py migrate"
+
+    you have to register models to show in admin page
+
+
+    in admin.py
+
+#############################################################
+    from django.contrib import admin
+    from .models import Tracking
+
+    # Register your models here.
+    admin.site.register(Tracking)
+
+#############################################################
