@@ -20,3 +20,13 @@ class Position(models.Model):
 
     def __str__(self):
         return 'name: {} - salary: {}'.format(self.name, self.salary)
+    
+class AskQA(models.Model):
+    name = models.CharField(max_length=100, null=True, blank=True, verbose_name='ชื่อผู้ติดต่อ')
+    email = models.EmailField(null=True, blank=True, verbose_name="email")
+    title = models.CharField(max_length=100, null=True, blank=True, verbose_name="หัวข้อ")
+    detail = models.TextField(null=True, blank=True, verbose_name="รายละเอียด")
+
+
+    def __str__(self):
+        return '{} - {}'.format(self.name, self.title)

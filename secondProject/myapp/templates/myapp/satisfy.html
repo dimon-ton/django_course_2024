@@ -1,0 +1,124 @@
+
+{% extends 'myapp/base.html' %}
+
+{% block title %} เว็บขายสินค้า - แบบสอบถามความพึงพอใจ  {% endblock title %}
+
+{% block menubar %}
+<a class="nav-link fw-bold py-1 px-0" aria-current="page" href="{% url 'shop' %}">หน้าแรก</a>
+  <a class="nav-link fw-bold py-1 px-0" href="#">สินค้า</a>
+  <a class="nav-link fw-bold py-1 px-0" href="#">เช็คเลข Tracking</a>
+  <a class="nav-link fw-bold py-1 px-0" href="{% url 'about-us' %}">เกี่ยวกับเรา</a>
+  <a class="nav-link fw-bold py-1 px-0 active" href="{% url 'contact' %}">ติดต่อเรา</a>
+{% endblock menubar %}
+    
+{% block content %}
+    
+
+     <h1>แบบสอบถามความถึงพอใจ</h1>
+     <div class="container mt-3">
+        <form method="POST">
+            {% csrf_token%}
+
+            <div class="form-group text-start mb-2">
+                <label for="sex">เพศ:&nbsp;</label>
+
+                <div class="form-check d-inline-flex">
+                    <input type="radio" class="form-check-input" id="radio_male" name="sex" value="ผู้ชาย" required>&nbsp;ผู้ชาย&nbsp;&nbsp;&nbsp;
+                    <label class="form-check-label" for="radio_male"></label>
+                </div>
+
+
+                <div class="form-check d-inline-flex">
+                    <input type="radio" class="form-check-input" id="radio_female" name="sex" value="ผู้หญิง" required>&nbsp;ผู้หญิง
+                    <label class="form-check-label" for="radio_female"></label>
+                </div>
+
+            </div>
+            
+            <div class="form-group row mb-2">
+                
+                <div class="col-md-5 col-sm-12 d-flex">
+                    <label for="age" class="form-label">อายุ:&nbsp;&nbsp;&nbsp;</label>
+                    
+                    <input type="number" class="form-control no-spin" id="age" name="age" min="10" max="80" placeholder="กรุณาพิมพ์อายุให้ถูกต้อง" required>
+                    
+                </div>
+                <div class="d-block d-md-none mb-3"></div>
+                <div class="col-md-7 col-sm-12 d-flex text-nowrap">
+                   
+                        <label for="education" class="form-label text-start">ระดับการศึกษา&nbsp;&nbsp;</label>
+                        <select class="form-select" id="education" name="education" required>
+                            <option value="" disabled selected hidden>กรุณาเลือกระดับการศึกษา</option>
+                            <option>มัธยมศึกษาปีที่ 3</option>
+                            <option>มัธยมศึกษาปีที่ 6</option>
+                            <option>อนุปริญญา</option>
+                            <option>ปริญญาตรี</option>
+                            <option>ปริญญาโท</option>
+                            <option>ปริญญาเอก</option>
+                        </select>
+                   
+
+                </div>
+            </div>
+            
+            <br>
+            <hr>
+            <div class="row text-start">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="text-center">หัวข้อ</th>
+                            <th>น้อย</th>
+                            <th>ค่อนข้างน้อย</th>
+                            <th>ปานกลาง</th>
+                            <th>มาก</th>
+                            <th>มากที่สุด</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1.ประสิทธิภาพของเว็บไซต์</td>
+                            <td colspan="5"></td>
+                         
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;ความสะดวกในการนำทางในเว็บไซต์</td>
+                            <td class="text-center"><input type="radio" class="form-check-input" name="item1_1" value="1" required></td>
+                            <td class="text-center"><input type="radio" class="form-check-input" name="item1_1" value="2" required></td>
+                            <td class="text-center"><input type="radio" class="form-check-input" name="item1_1" value="3" required></td>
+                            <td class="text-center"><input type="radio" class="form-check-input" name="item1_1" value="4" required></td>
+                            <td class="text-center"><input type="radio" class="form-check-input" name="item1_1" value="5" required></td>
+                      
+                        </tr>
+
+                        <tr>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;ความรวดเร็วของเว็บไซต์</td>
+                            <td class="text-center"><input type="radio" class="form-check-input" name="item1_2" value="1" required></td>
+                            <td class="text-center"><input type="radio" class="form-check-input" name="item1_2" value="2" required></td>
+                            <td class="text-center"><input type="radio" class="form-check-input" name="item1_2" value="3" required></td>
+                            <td class="text-center"><input type="radio" class="form-check-input" name="item1_2" value="4" required></td>
+                            <td class="text-center"><input type="radio" class="form-check-input" name="item1_2" value="5" required></td>
+                      
+                        </tr>
+
+    
+                    
+                    </tbody>
+                </table>
+            </div>
+
+
+
+            <div class="form-group row mb-2">
+                <div class="col text-start">
+                    <label for="education" class="form-label">ข้อเสนอแนะ</label>
+                    <textarea name="offer" class="form-control" id="offer" rows="10" placeholder="กรุณากรอกข้อเสนอแนะ"></textarea>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary mt-2">submit</button>
+        </form>
+     </div>
+
+{% endblock content %}
