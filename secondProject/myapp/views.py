@@ -29,3 +29,9 @@ def tracking(req):
     context = {'tracking':track_list}
 
     return render(req, "myapp/tracking.html", context)
+
+def ask(req):
+    if req.method == 'POST':
+        data = req.POST.copy()
+        print('data', data)
+    return render(req, 'myapp/ask.html')
