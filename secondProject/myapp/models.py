@@ -30,3 +30,16 @@ class AskQA(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.name, self.title)
+    
+
+class SurveyResponse(models.Model):
+    sex = models.CharField(max_length=10)
+    age = models.IntegerField()
+    education = models.CharField(max_length=50)
+    offer = models.TextField()
+    question_main = models.CharField(max_length=255)
+    question_subtopic = models.CharField(max_length=255)
+    response_value = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.sex} - {self.age} - {self.education} - {self.question_main} - {self.question_subtopic}"

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Tracking, AskQA
+from .models import Tracking, AskQA, SurveyResponse
 
 # Create your views here.
 
@@ -53,4 +53,77 @@ def ask(req):
     return render(req, 'myapp/ask.html')
 
 def satisfy(req):
-    return render(req, "myapp/satisfy.html")
+
+    data = [
+            {
+                'main': "ประสบการณ์การใช้งาน (User Experience)",
+                'subtopics': [
+                "ความสะดวกในการนำทางในเว็บไซต์",
+                "ความรวดเร็วของเว็บไซต์",
+                "ความเข้าใจในการใช้งานระบบ",
+                "การแสดงผลข้อมูลและสินค้า"
+                ]
+            },
+            {
+                'main': "การให้บริการ (Customer Service)",
+                'subtopics': [
+                "การตอบรับและแก้ไขปัญหาของลูกค้า",
+                "ความชัดเจนในการติดต่อและสื่อสาร",
+                "ความเป็นมืออาชีพของทีมบริการลูกค้า"
+                ]
+            },
+            {
+                'main': "คุณภาพของข้อมูลและสารสนเทศ",
+                'subtopics': [
+                "ความถูกต้องและความครบถ้วนของข้อมูล",
+                "ความชัดเจนในการแสดงข้อมูล",
+                "ความทันสมัยของข้อมูล"
+                ]
+            },
+            {
+                'main': "ความปลอดภัยและความเป็นส่วนตัว",
+                'subtopics': [
+                "ระบบการรักษาความปลอดภัยของข้อมูลลูกค้า",
+                "การสื่อสารที่เป็นส่วนตัวและความเปิดเผยที่เหมาะสม"
+                ]
+            },
+            {
+                'main': "ความพึงพอใจทั่วไป",
+                'subtopics': [
+                "ความพึงพอใจในบริการรวมถึงประสบการณ์ทั้งหมด",
+                "ความพึงพอใจในการจัดส่งหรือการให้บริการพิเศษ",
+                "ความพึงพอใจในราคาและสิ่งที่ได้รับ"
+                ]
+            }
+            ]
+    
+
+    context = {'questionair':data}
+
+    if req.method == 'POST':
+        sex = req.POST.get('sex')
+        age = req.POST.get('age')
+        education = req.POST.get('education')
+        offer = req.POST.get('offer')
+
+        # Process radio button responses
+        for q in context["questionair"]:
+            for s in q["subtopics"]:
+                item_name = f'item{context["questionair"].index(q) + 1}_{q["subtopics"].index(s) + 1}'
+                response_value = req.POST.get(item_name)
+                
+                # Assuming you have a model named SurveyResponse
+                SurveyResponse.objects.create(
+                    sex=sex,
+                    age=age,
+                    education=education,
+                    offer=offer,
+                    question_main=q["main"],
+                    question_subtopic=s,
+                    response_value=response_value
+                )      
+
+
+    
+
+    return render(req, "myapp/satisfy.html", context)

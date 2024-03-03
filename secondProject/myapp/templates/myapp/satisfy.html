@@ -19,6 +19,8 @@
         <form method="POST">
             {% csrf_token%}
 
+
+
             <div class="form-group text-start mb-2">
                 <label for="sex">เพศ:&nbsp;</label>
 
@@ -55,6 +57,7 @@
                             <option>ปริญญาตรี</option>
                             <option>ปริญญาโท</option>
                             <option>ปริญญาเอก</option>
+                            <option>อื่น ๆ</option>
                         </select>
                    
 
@@ -68,41 +71,40 @@
                     <thead>
                         <tr>
                             <th class="text-center">หัวข้อ</th>
-                            <th>น้อย</th>
-                            <th>ค่อนข้างน้อย</th>
-                            <th>ปานกลาง</th>
-                            <th>มาก</th>
-                            <th>มากที่สุด</th>
+                            <th class="text-center">น้อย</th>
+                            <th class="text-center">ค่อนข้างน้อย</th>
+                            <th class="text-center">ปานกลาง</th>
+                            <th class="text-center">มาก</th>
+                            <th class="text-center">มากที่สุด</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1.ประสิทธิภาพของเว็บไซต์</td>
-                            <td colspan="5"></td>
-                         
-                        </tr>
 
-                        <tr>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;ความสะดวกในการนำทางในเว็บไซต์</td>
-                            <td class="text-center"><input type="radio" class="form-check-input" name="item1_1" value="1" required></td>
-                            <td class="text-center"><input type="radio" class="form-check-input" name="item1_1" value="2" required></td>
-                            <td class="text-center"><input type="radio" class="form-check-input" name="item1_1" value="3" required></td>
-                            <td class="text-center"><input type="radio" class="form-check-input" name="item1_1" value="4" required></td>
-                            <td class="text-center"><input type="radio" class="form-check-input" name="item1_1" value="5" required></td>
-                      
-                        </tr>
+  
 
-                        <tr>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;ความรวดเร็วของเว็บไซต์</td>
-                            <td class="text-center"><input type="radio" class="form-check-input" name="item1_2" value="1" required></td>
-                            <td class="text-center"><input type="radio" class="form-check-input" name="item1_2" value="2" required></td>
-                            <td class="text-center"><input type="radio" class="form-check-input" name="item1_2" value="3" required></td>
-                            <td class="text-center"><input type="radio" class="form-check-input" name="item1_2" value="4" required></td>
-                            <td class="text-center"><input type="radio" class="form-check-input" name="item1_2" value="5" required></td>
-                      
-                        </tr>
 
-    
+                        {% for q in questionair %}
+                            <tr>
+                                <td>{{ forloop.counter }}.{{ q.main }}</td>
+                                <td colspan="5"></td>
+                            
+                            </tr>
+
+                            {% for s in q.subtopics %}
+
+                            <tr>
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;{{ s }}</td>
+                                <td class="text-center"><input type="radio" class="form-check-input" name="item{{ forloop.parentloop.counter }}_{{ forloop.counter }}" value="1" required></td>
+                                <td class="text-center"><input type="radio" class="form-check-input" name="item{{ forloop.parentloop.counter }}_{{ forloop.counter }}" value="2" required></td>
+                                <td class="text-center"><input type="radio" class="form-check-input" name="item{{ forloop.parentloop.counter }}_{{ forloop.counter }}" value="3" required></td>
+                                <td class="text-center"><input type="radio" class="form-check-input" name="item{{ forloop.parentloop.counter }}_{{ forloop.counter }}" value="4" required></td>
+                                <td class="text-center"><input type="radio" class="form-check-input" name="item{{ forloop.parentloop.counter }}_{{ forloop.counter }}" value="5" required></td>
+                        
+                            </tr>
+
+                            {% endfor %}
+
+                        {% endfor %}
                     
                     </tbody>
                 </table>
@@ -117,7 +119,7 @@
                 </div>
             </div>
             
-            <button type="submit" class="btn btn-primary mt-2">submit</button>
+            <button type="submit" class="btn btn-primary my-2">submit</button>
         </form>
      </div>
 
