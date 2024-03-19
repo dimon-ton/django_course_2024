@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Tracking, AskQA, SurveyResponse
+from .models import *
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -24,9 +25,9 @@ def tracking(req):
     #               'สมชาย - A1236'
     #               ]
 
-    track_list = Tracking.objects.all()
-    print(track_list)
-    context = {'tracking':track_list}
+    Tracking_list = Tracking.objects.all()
+    print(Tracking_list)
+    context = {'tracking':Tracking_list}
 
     return render(req, "myapp/tracking.html", context)
 
@@ -51,6 +52,22 @@ def ask(req):
 
 
     return render(req, 'myapp/ask.html')
+
+
+@login_required
+def question(req):
+    # track_list = ['ลุงวิศวกร - A1234',
+    #               'สมหญิง - A1235',
+    #               'สมชาย - A1236'
+    #               ]
+
+    question = AskQA.objects.all()
+    print(question)
+    context = {'question':question}
+
+    return render(req, "myapp/questions.html", context)
+
+
 
 def satisfy(req):
 
@@ -127,3 +144,25 @@ def satisfy(req):
     
 
     return render(req, "myapp/satisfy.html", context)
+
+
+@login_required
+def anwser(req, askid):
+    # localhost:8000/answer/askid
+
+    record = AskQA.objects.get(id=askid)
+
+    if req.method == 'POST':
+        data = req.POST.copy()
+
+        # name = data.get('askid')
+        detail_answer = data.get('detail_answer')
+
+        record.detail_answer = detail_answer
+        record.save()
+
+    context = {'record': record}
+
+    
+
+    return render(req, 'myapp/anwser.html', context)

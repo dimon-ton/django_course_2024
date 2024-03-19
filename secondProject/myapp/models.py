@@ -22,10 +22,11 @@ class Position(models.Model):
         return 'name: {} - salary: {}'.format(self.name, self.salary)
     
 class AskQA(models.Model):
-    name = models.CharField(max_length=100, null=True, blank=True, verbose_name='ชื่อผู้ติดต่อ')
+    name = models.CharField(max_length=100, verbose_name='ชื่อผู้ติดต่อ')
     email = models.EmailField(null=True, blank=True, verbose_name="email")
     title = models.CharField(max_length=100, null=True, blank=True, verbose_name="หัวข้อ")
     detail = models.TextField(null=True, blank=True, verbose_name="รายละเอียด")
+    detail_answer = models.TextField(null=True, blank=True, verbose_name="คำตอบ")
 
 
     def __str__(self):
@@ -43,3 +44,14 @@ class SurveyResponse(models.Model):
 
     def __str__(self):
         return f"{self.sex} - {self.age} - {self.education} - {self.question_main} - {self.question_subtopic}"
+    
+
+class Score(models.Model):
+    survey = models.ForeignKey(SurveyResponse, on_delete=models.CASCADE)
+    score = ['test1', 'test1']
+
+
+    test1 = models.IntegerField()
+
+    def __str__(self):
+        return f'{self.survey}'
