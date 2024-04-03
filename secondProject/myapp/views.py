@@ -166,3 +166,12 @@ def anwser(req, askid):
     
 
     return render(req, 'myapp/anwser.html', context)
+
+
+
+def PostPage(req):
+    posts = Post.objects.all()
+
+    context = {"posts":posts}
+
+    return render(req, 'myapp/blogs.html', context)

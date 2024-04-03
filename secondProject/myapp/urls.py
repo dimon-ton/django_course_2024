@@ -10,5 +10,6 @@ urlpatterns = [
     path("satisfy", satisfy, name='satisfy'),
     path("ask", ask, name="ask"),
     path("questions", question, name="questions"),
-    path("anwser/<int:askid>", anwser, name="answer")
+    path("anwser/<int:askid>", anwser, name="answer"),
+    path("blogs", PostPage, name="post"),
 ]
