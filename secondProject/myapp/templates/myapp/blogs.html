@@ -6,16 +6,27 @@
 
 
 <main>
-    {{posts}}
+
+  <div class="my-2">
+    <h1>block example</h1>
+    <h4>everything you need to know!</h4>
+  </div>
+    
     <section class="py-5 text-center container">
+  
         <div class="album py-5 bg-body-tertiary">
             <div class="container">
-        
+           
               <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 {% for post in posts %}
                 <div class="col">
                   <div class="card shadow-sm">
-                    <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"><img src="{{ post.images.url }}"></svg>
+                    <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="none" focusable="false">
+                      <title>Placeholder</title>
+                      <rect width="100%" height="100%" fill="#55595c"></rect>
+                      <image xlink:href="{{ post.images.url }}" width="100%" height="100%" preserveAspectRatio="none"></image>
+                  </svg>
+                  
                     <div class="card-body">
                       <p class="card-text">{{ post.title }}</p>
                       <div class="d-flex justify-content-between align-items-center">
