@@ -12,4 +12,5 @@ urlpatterns = [
     path("questions", question, name="questions"),
     path("anwser/<int:askid>", anwser, name="answer"),
     path("blogs", PostPage, name="post"),
+    path("blog-detail/<slug:slug>/", postDetail, name="blog-detail"),  
 ]

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-^%(n6_o^i1bgwlvmvq&9_e=e+(w8i8&4ycf4g5!1msp=%lqaht
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -135,3 +135,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'home'
+
+
+CSRF_TRUSTED_ORIGINS = ['https://*.shopkru.online','https://*.127.0.0.1']

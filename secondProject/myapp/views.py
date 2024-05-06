@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .models import *
 from django.contrib.auth.decorators import login_required
@@ -175,3 +175,18 @@ def PostPage(req):
     context = {"posts":posts}
 
     return render(req, 'myapp/blogs.html', context)
+
+
+def postDetail(req, slug):
+    
+    try:
+        single_post = get_object_or_404(Post, slug=slug)
+        print("รายละเอียดบทความ", single_post)
+    except Post.DoesNotExist:
+        return render(req, 'myapp/home.html')
+    
+
+    context = {'single_post': single_post}
+
+    return render(req, 'myapp/blog-detail.html', context)
+
