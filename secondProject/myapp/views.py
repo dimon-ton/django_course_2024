@@ -170,7 +170,7 @@ def anwser(req, askid):
 
 
 def PostPage(req):
-    posts = Post.objects.all()
+    posts = Post.objects.all().order_by('id').reverse()[:3]
 
     context = {"posts":posts}
 
@@ -178,7 +178,8 @@ def PostPage(req):
 
 
 def postDetail(req, slug):
-    
+    posts = Post.objects.all().order_by('id').reverse()[:3]
+
     try:
         single_post = get_object_or_404(Post, slug=slug)
         print("รายละเอียดบทความ", single_post)
@@ -186,7 +187,7 @@ def postDetail(req, slug):
         return render(req, 'myapp/home.html')
     
 
-    context = {'single_post': single_post}
+    context = {'single_post': single_post, "posts":posts}
 
     return render(req, 'myapp/blog-detail.html', context)
 

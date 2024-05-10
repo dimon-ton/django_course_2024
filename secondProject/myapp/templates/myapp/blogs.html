@@ -27,10 +27,9 @@
                       <rect width="100%" height="100%" fill="#55595c"></rect>
                       {% if post.images %}
                         <image xlink:href="{{ post.images.url }}" width="100%" height="100%" preserveAspectRatio="none"></image>
-                        {% else %}                       
-                        <image xlink:href="{% static 'images/no-image.png'%}" width="50%" height="50%" preserveAspectRatio="none"></image>
-                        <!-- <img src="{% static 'images/no-image.png'%}" alt="Girl in a jacket" width="50" height="50"> -->
-                        
+                      {% else %}                       
+                        <image xlink:href="{% static 'images/no-image.png' %}" width="70%" height="70%" preserveAspectRatio="none"></image>
+                        <!-- <img src="{% static 'images/no-image.png'%}" alt="Girl in a jacket" width="50" height="50"> -->                       
                       {% endif %}
                     </svg>
                   
