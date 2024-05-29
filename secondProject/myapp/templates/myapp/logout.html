@@ -1,0 +1,18 @@
+
+{% extends 'myapp/base.html' %}
+
+{% block title %} หน้าล็อคอิน {% endblock title %}
+
+{% block menubar %}
+<a class="nav-link fw-bold py-1 px-0" aria-current="page" href="{% url 'shop' %}">หน้าแรก</a>
+  <a class="nav-link fw-bold py-1 px-0" href="#">สินค้า</a>
+  <a class="nav-link fw-bold py-1 px-0" href="#">เช็คเลข Tracking</a>
+  <a class="nav-link fw-bold py-1 px-0" href="{% url 'about-us' %}">เกี่ยวกับเรา</a>
+  <a class="nav-link fw-bold py-1 px-0 active" href="{% url 'contact' %}">ติดต่อเรา</a>
+{% endblock menubar %}
+    
+{% block content %}
+
+<h1>logout</h1>
+
+{% endblock content %}

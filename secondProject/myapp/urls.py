@@ -14,5 +14,7 @@ urlpatterns = [
     path("blogs", PostPage, name="post"),
     path("blog-detail/<slug:slug>/", postDetail, name="blog-detail"),
     # register and login page  
-    path("register", register, name="register"),  
+    path("register", register, name="register"),
+    path("login", Login, name="login"),
+    path("logout",logout_view, name="logout")
 ]

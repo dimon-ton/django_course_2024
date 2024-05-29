@@ -1,10 +1,13 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from .models import *
 from django.contrib.auth.decorators import login_required
 
 # manage about register
 from django.contrib.auth.models import User
+
+# about authentication and login
+from django.contrib.auth import authenticate, login, logout
 
 
 def Home(req):
@@ -232,3 +235,39 @@ def register(req):
 
 
     return render(req, 'myapp/register.html', context)
+
+
+def Login(req):
+
+    context = {}
+
+    if req.method == 'POST':
+        data = req.POST.copy()
+
+        # name = data.get('name')
+        email = data.get('email')
+        password = data.get('password')
+
+        check = User.objects.filter(username=email)
+
+
+        if len(check) == 0:
+
+            context['nouser'] = 'nouser'
+        else:
+            try:
+                user = authenticate(username=email,password=password)
+                login(req, user)
+                print("login complete")
+                return redirect('shop')
+            except:
+                context['wrongpassword'] = 'wrongpassword'
+
+    return render(req, 'myapp/login.html', context)
+
+
+
+
+def logout_view(req):
+    logout(req)
+    return render(req, 'myapp/logout.html')

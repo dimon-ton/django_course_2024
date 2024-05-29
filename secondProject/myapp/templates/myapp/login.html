@@ -12,7 +12,30 @@
 {% endblock menubar %}
     
 {% block content %}
+
+
+
+
+{% if nouser %}
+<div class="alert alert-warning" role="alert">
+    อีเมล์นี้ไม่มีในระบบกรุณาสมัครสมาชิก
+</div>
+<center><a class="btn btn-primary" href="{% url 'register' %}" role="button">สมัครสมาชิก</a></center>
+{% endif %}
+
     
+{% if wrongpassword %}
+<div class="alert alert-warning" role="alert">
+    รหัสผ่านผิดกรุณากรอกใหม่
+</div>
+<center><a class="btn btn-primary" href="#" role="button">รีเซ็ตรหัสผ่าน</a></center>
+{% endif %}
+
+
+<form action="{% url 'logout' %}" method="post">
+    {% csrf_token %}
+    <button class = "btn btn-danger" type="submit" role="button">Logout</button>
+</form>
 
      <h1>เข้าสู่ระบบ</h1>
      <div class="container">
