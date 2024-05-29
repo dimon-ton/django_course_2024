@@ -1,0 +1,61 @@
+
+{% extends 'myapp/base.html' %}
+
+{% block title %} ยินดีต้อนรับหน้าสมัครสมาชิก  {% endblock title %}
+
+{% block menubar %}
+<a class="nav-link fw-bold py-1 px-0" aria-current="page" href="{% url 'shop' %}">หน้าแรก</a>
+  <a class="nav-link fw-bold py-1 px-0" href="#">สินค้า</a>
+  <a class="nav-link fw-bold py-1 px-0" href="#">เช็คเลข Tracking</a>
+  <a class="nav-link fw-bold py-1 px-0" href="{% url 'about-us' %}">เกี่ยวกับเรา</a>
+  <a class="nav-link fw-bold py-1 px-0 active" href="{% url 'contact' %}">ติดต่อเรา</a>
+{% endblock menubar %}
+    
+{% block content %}
+
+
+    {% if success %}
+        <div class="alert alert-success" role="alert">
+            คุณได้สมัครสมาชิกเรียบร้อยแล้ว
+        </div>
+
+    {% else %}
+
+            {% if usertaken %}
+                <div class="alert alert-warning" role="alert">
+                    อีเมล์นี้ถูกใช้แล้ว
+                </div>
+            {% endif %}
+        
+     <h1>สมัครสมาชิก</h1>
+     <div class="container">
+        <form action="" method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="name">ชื่อ</label>
+                <input type="text" class="form-control" id="name" name="name">
+            </div>
+            <div class="form-group">
+                <label for="email">email</label>
+                <input type="email" class="form-control" id="email" name="email">
+            </div>
+ 
+            <div class="form-group">
+                <label for="password">password</label>
+                <input type="password" class="form-control" id="password" name="password">
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">submit</button>
+        </form>
+     </div>
+
+    {% endif %}
+
+
+    
+
+
+
+{% endblock content %}

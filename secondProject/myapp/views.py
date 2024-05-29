@@ -3,7 +3,8 @@ from django.http import HttpResponse
 from .models import *
 from django.contrib.auth.decorators import login_required
 
-# Create your views here.
+# manage about register
+from django.contrib.auth.models import User
 
 
 def Home(req):
@@ -182,7 +183,7 @@ def postDetail(req, slug):
 
     try:
         single_post = get_object_or_404(Post, slug=slug)
-        print("รายละเอียดบทความ", single_post)
+        
     except Post.DoesNotExist:
         return render(req, 'myapp/home.html')
     
@@ -191,3 +192,43 @@ def postDetail(req, slug):
 
     return render(req, 'myapp/blog-detail.html', context)
 
+
+
+def register(req):
+
+    context = {}
+
+    if req.method == 'POST':
+        data = req.POST.copy()
+
+        name = data.get('name')
+        email = data.get('email')
+        password = data.get('password')
+
+        check = User.objects.filter(username=email)
+
+
+        if len(check) == 0:
+            firstname, lastname = name.split(' ')
+
+            newuser = User()
+            newuser.username = email
+            newuser.first_name = firstname
+            newuser.last_name = lastname
+
+
+
+
+            # password is different
+            newuser.set_password(password)
+
+            newuser.save()
+
+
+
+            context['success'] = 'success'
+        else:
+            context['usertaken'] = 'usertaken'
+
+
+    return render(req, 'myapp/register.html', context)
