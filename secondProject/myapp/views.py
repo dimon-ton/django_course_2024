@@ -271,3 +271,12 @@ def Login(req):
 def logout_view(req):
     logout(req)
     return render(req, 'myapp/logout.html')
+
+
+def AllProduct(req):
+    all_product = Product.objects.filter(available=True)
+
+    print(all_product)
+    context = {"all_product":all_product}
+
+    return render(req, "myapp/all-product.html", context)

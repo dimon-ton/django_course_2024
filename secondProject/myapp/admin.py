@@ -18,3 +18,11 @@ class PostAdmin(SummernoteModelAdmin):
 admin.site.register(Author)
 admin.site.register(Post, PostAdmin)
 
+
+class ProductAdmin(SummernoteModelAdmin):
+    summernote_fields = ("detail")
+    list_display = ["id", "name", "available"]
+    list_editable = ["name"]
+
+admin.site.register(Product, ProductAdmin)
+admin.site.register(Category)

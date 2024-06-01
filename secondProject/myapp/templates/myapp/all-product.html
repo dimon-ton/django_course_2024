@@ -1,0 +1,37 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %} เว็บขายสินค้า - สินค้า {% endblock title %}
+
+{% block content %}
+
+
+  <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+    <h1 class="display-4 fw-normal text-body-emphasis">ร้านค้า</h1>
+    <p class="fs-5 text-body-secondary">ร้านขายของ ลุง</p>
+  </div>
+
+
+
+  <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+    {% for product in all_product %}
+    <div class="col">
+      <div class="card mb-4 rounded-3 shadow-sm">
+        <img src="{{ product.image_url }}" class="card-img-top" alt="{{ product.name }}">
+        <div class="card-header py-3">
+          <h4 class="my-0 fw-normal">{{ product.name }}</h4>
+        </div>
+        <div class="card-body">
+          <h1 class="card-title pricing-card-title">{{ product.price }}<small class="text-body-secondary fw-light">THB</small></h1>
+          <ul class="list-unstyled mt-3 mb-4">
+            <li><small>ชนิดสินค้า: </small>{{ product.category.category_name }}</li>
+            <li><small>จำนวน: </small>{{ product.quantity }}</li>
+          </ul>
+          <p>{{ product.detail }}</p>
+          <button type="button" class="w-100 btn btn-lg btn-outline-primary">Buy</button>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}
