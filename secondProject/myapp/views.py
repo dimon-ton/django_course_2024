@@ -227,6 +227,10 @@ def register(req):
 
             newuser.save()
 
+            profile = Profile()
+            profile.user = newuser
+            profile.save()
+
 
 
             context['success'] = 'success'
@@ -280,3 +284,29 @@ def AllProduct(req):
     context = {"all_product":all_product}
 
     return render(req, "myapp/all-product.html", context)
+
+
+def DiscountPage(req):
+
+    context = {}
+
+    if req.method == 'POST':
+        data = req.POST.copy()
+
+        check = data.get('discount')
+
+        if check == 'check-true':
+            # req.user.discount.active = True
+            user = User.objects.get(username=req.user.username)
+
+            discount = Discount.objects.get(user=user)
+            discount.active = True
+            discount.save()
+
+            return redirect('all-product')
+
+
+ 
+
+
+    return render(req, 'myapp/discount.html', context)

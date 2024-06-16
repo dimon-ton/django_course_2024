@@ -5,14 +5,26 @@
 {% block content %}
 
 
-  <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
-    <h1 class="display-4 fw-normal text-body-emphasis">ร้านค้า</h1>
-    <p class="fs-5 text-body-secondary">ร้านขายของ ลุง</p>
+  <br><br><br>
+
+
+   <div class="pricing-header p-3 pb-md-4 mx-4 text-center">
+
+    {% if user.is_authenticated and user.profile.usertype == 'vip' and user.discount.active == False %}
+
+      <h2 class="text-white">คุณได้รับส่วนลดพิเศษ <a href="{% url 'discount' %}">คลิกเลย</a></h2>
+
+    {% endif %}
+
+      <h1 class="display-4 fw-normal text-body-emphasis">ร้านค้า</h1>
+      <p class="fs-5 text-body-secondary">ร้านขายของ ลุง</p>
   </div>
 
 
 
+
   <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+
     {% for product in all_product %}
     <div class="col">
       <div class="card mb-4 rounded-3 shadow-sm">

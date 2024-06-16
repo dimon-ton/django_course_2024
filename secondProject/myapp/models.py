@@ -1,5 +1,6 @@
 from django.db import models
 from taggit.managers import TaggableManager
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -105,3 +106,19 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    photo = models.ImageField(upload_to='profile_photo', null=True, blank=True)
+    usertype = models.CharField(max_length=100, default='member')
+    favor = models.CharField(max_length=100, null=True, blank=True)
+    fb_account = models.CharField(max_length=100, default='No Facebook')
+    address = models.TextField(null=True, blank=True)
+    telephone_number = models.CharField(max_length=8, null=True, blank=True)
+
+    def __str__(self):
+        return self.user.username
+    
+class Discount(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    percent = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
+    active = models.BooleanField(default=False)
