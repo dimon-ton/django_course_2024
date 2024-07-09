@@ -30,3 +30,5 @@ admin.site.register(Category)
 
 admin.site.register(Profile)
 admin.site.register(Discount)
+
+admin.site.register(Order)

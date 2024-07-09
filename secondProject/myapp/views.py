@@ -9,6 +9,8 @@ from django.contrib.auth.models import User
 # about authentication and login
 from django.contrib.auth import authenticate, login, logout
 
+from django.core.files.storage import FileSystemStorage
+
 
 def Home(req):
     return HttpResponse("<h1>hello world</h1>")
@@ -310,3 +312,55 @@ def DiscountPage(req):
 
 
     return render(req, 'myapp/discount.html', context)
+
+
+def ProductDetail(req, slug):
+    product = Product.objects.get(slug=slug)
+
+    context = {"product": product, "product_price": product.normal_price}
+
+    if product.price1 > 0:
+        price_1 = (product.price1 * 100) / product.normal_price
+
+        context["price_1"] = 100 - int(price_1)
+        context["product_price"] = product.price1
+
+
+    if product.price2 > 0:
+        price_2 = (product.price2 * 100) / product.normal_price
+
+        context["price_2"] = 100 - int(price_2)
+
+    if req.method == 'POST':
+        data = req.POST.copy()
+
+        new_order = Order()
+        new_order.products = product
+        new_order.first_name = data.get('first_name')
+        new_order.last_name = data.get('last_name')
+        new_order.tel = data.get('tel')
+        new_order.email = data.get('email')
+        new_order.address = data.get('address')
+        new_order.count = data.get('count')
+        new_order.buyer_price = data.get('buyer_price')
+        new_order.shipping_cost = data.get('shpping_cost')
+
+
+        # insert picture into the database
+
+        try:
+            file_image = req.FILES["upload_slip"]
+            file_image_name = req.FILES["upload_slip"].name.replace(" ","")
+            file_system_storage = FileSystemStorage()
+            file_name = file_system_storage.save("product-slip/" + file_image_name, file_image)
+            upload_file_url = file_system_storage.url(file_name)
+            new_order.slip = upload_file_url[6:]
+
+        except:
+
+            new_order.slip = "/default.png"
+        
+        
+        new_order.save()
+
+    return render(req, "myapp/product-detail.html", context)
