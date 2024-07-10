@@ -39,11 +39,20 @@
             <li><small>จำนวน: </small>{{ product.quantity }}</li>
           </ul>
           <p>{{ product.detail }}</p>
-          <button type="button" class="w-100 btn btn-lg btn-outline-primary">Buy</button>
+          <button type="button" class="w-100 btn btn-lg btn-outline-primary" onclick="redirectToOrderPage('{{ product.slug }}')">Buy</button>
         </div>
       </div>
     </div>
     {% endfor %}
 </div>
+
+
+<script>
+  function redirectToOrderPage(slug) {
+      // Assuming you have the parameter value available in a variable
+      const paramValue = slug; // You can dynamically set this value as needed
+      window.location.href = "{% url 'product-detail' 'PLACEHOLDER' %}".replace('PLACEHOLDER', paramValue);
+  }
+</script>
 
 {% endblock content %}

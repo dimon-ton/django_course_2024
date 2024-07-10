@@ -92,6 +92,7 @@ class Category(models.Model):
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=255)
+    introduction = models.TextField(null=True, blank=True)
     detail = models.TextField(null=True, blank=True)
     normal_price = models.IntegerField(null=True, blank=True)
     price1 = models.IntegerField(null=True, blank=True)

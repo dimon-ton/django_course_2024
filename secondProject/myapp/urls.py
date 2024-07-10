@@ -19,4 +19,5 @@ urlpatterns = [
     path("logout",logout_view, name="logout"),
     path("products", AllProduct, name="all-product"),
     path("discount", DiscountPage, name="discount"),
+    path("product/<slug:slug>", ProductDetail, name="product-detail"),
 ]
