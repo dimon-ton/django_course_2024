@@ -24,11 +24,22 @@ class ProductAdmin(SummernoteModelAdmin):
     list_display = ["id", "name", "available"]
     list_editable = ["name"]
 
-admin.site.register(Product, ProductAdmin)
-admin.site.register(Category)
 
+
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ["id","products"]
+
+admin.site.register(Order, OrderAdmin) 
+
+class TrackingOrderIDAdmin(admin.ModelAdmin):
+    list_display = ["id", "tracking_order"]
+
+admin.site.register(TrackingOrderID, TrackingOrderIDAdmin)
+
+admin.site.register(Product, ProductAdmin)
+
+admin.site.register(Category)
 
 admin.site.register(Profile)
 admin.site.register(Discount)
 
-admin.site.register(Order)

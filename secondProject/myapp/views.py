@@ -11,6 +11,9 @@ from django.contrib.auth import authenticate, login, logout
 
 from django.core.files.storage import FileSystemStorage
 
+import string
+import random
+
 
 def Home(req):
     return HttpResponse("<h1>hello world</h1>")
@@ -314,7 +317,21 @@ def DiscountPage(req):
     return render(req, 'myapp/discount.html', context)
 
 
+def randomOrderID():
+    random_id = ""
+    random_id += random.choice(string.ascii_uppercase)
+    random_id += random.choice(string.ascii_uppercase)
+
+    for i in range(8):
+        random_id += random.choice("0123456789")
+
+
+    return random_id
+
 def ProductDetail(req, slug):
+
+    randomOrderID()
+
     product = Product.objects.get(slug=slug)
 
     context = {"product": product, "product_price": product.normal_price}
@@ -363,4 +380,57 @@ def ProductDetail(req, slug):
         
         new_order.save()
 
+        
+
+        # เพิ่ม function random id
+        try:
+            
+            tracking_id = TrackingOrderID.objects.all()
+
+            while True:
+                order_ID = randomOrderID()
+                for tid in tracking_id: # check if the tracking id is complicated.
+                    if order_ID == tid.order_id:
+                        continue
+                break
+        except:
+            
+            order_ID = randomOrderID()
+
+        new_tracking_id = TrackingOrderID()
+        new_tracking_id.tracking_order = new_order
+        new_tracking_id.order_id = order_ID
+        new_tracking_id.save()
+
+        return redirect("tracking-order-page", order_ID)
+
+
     return render(req, "myapp/product-detail.html", context)
+
+
+
+def TrackingOrderId(req, tid):
+
+    tracking_id = TrackingOrderID.objects.get(order_id=tid).tracking_order
+    buyer_price = tracking_id.buyer_price
+
+    if buyer_price == int(buyer_price):
+        buyer_price = int(buyer_price)
+
+
+    shipping_cost = tracking_id.shipping_cost
+    if shipping_cost == int(shipping_cost):
+        shipping_cost = int(shipping_cost)
+
+    all_price = tracking_id.buyer_price + tracking_id.shipping_cost
+
+    context = {
+                    "tracking_id": tracking_id, 
+                    "buyer_price": buyer_price, 
+                    "order_id": tid,
+                    "shipping_cost": shipping_cost, 
+                    "all_price": all_price
+               
+               }
+    
+    return render(req, "myapp/tracking-order.html", context)
