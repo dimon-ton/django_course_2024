@@ -97,7 +97,7 @@ class Product(models.Model):
     normal_price = models.IntegerField(null=True, blank=True)
     price1 = models.IntegerField(null=True, blank=True)
     price2 = models.IntegerField(null=True, blank=True)
-    shipping_cost = models.IntegerField(default=40, null=True, blank=True)
+    shipping_cost = models.FloatField(default=40, null=True, blank=True)
     images = models.ImageField(upload_to="products", null=True, blank=True)
     quantity = models.IntegerField(default=1)
     available = models.BooleanField(default=True)

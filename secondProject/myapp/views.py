@@ -360,11 +360,10 @@ def ProductDetail(req, slug):
         new_order.address = data.get('address')
         new_order.count = data.get('count')
         new_order.buyer_price = data.get('buyer_price')
-        new_order.shipping_cost = product.shipping_cost * data.get('count')
+        new_order.shipping_cost = product.shipping_cost * int(data.get('count'))
 
 
         # insert picture into the database
-
         try:
             file_image = req.FILES["upload_slip"]
             file_image_name = req.FILES["upload_slip"].name.replace(" ","")
@@ -419,6 +418,7 @@ def TrackingOrderId(req, tid):
 
 
     shipping_cost = tracking_id.shipping_cost
+    print('shipping cost',shipping_cost)
     if shipping_cost == int(shipping_cost):
         shipping_cost = int(shipping_cost)
 
