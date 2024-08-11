@@ -39,7 +39,14 @@
             <li><small>จำนวน: </small>{{ product.quantity }}</li>
           </ul>
           <p>{{ product.detail }}</p>
-          <button type="button" class="w-100 btn btn-lg btn-outline-primary" onclick="redirectToOrderPage('{{ product.slug }}')">Buy</button>
+          <div class="text-right">
+            {% if user.is_authenticated and user.profile.usertype == 'member' %}
+              <a class="btn btn-sm btn btn-outline-primary" href="{% url 'add-to-cart' product.id %}" role="button">เพิ่มไปยังตะกร้าสินค้า</a>
+              <button type="button" class="btn btn-sm btn-outline-primary" onclick="redirectToOrderPage('{{ product.slug }}')">สั่งซื้อ</button>
+            {% else %}
+              <button type="button" class="btn btn-sm btn-outline-primary" disabled>สั่งซื้อ</button>
+            {% endif %}
+          </div>
         </div>
       </div>
     </div>

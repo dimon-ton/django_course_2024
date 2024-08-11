@@ -218,10 +218,17 @@ href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel
             <a class="nav-link fw-bold py-1 px-0" href="#">สินค้า</a>
             <a class="nav-link fw-bold py-1 px-0" href="{% url 'post' %}">บทความ</a>
             <a class="nav-link fw-bold py-1 px-0" href="{% url 'tracking' %}">เช็คเลข Tracking</a>
+            {% if user.is_authenticated and user.profile.usertype == 'member' %}
+              <a class="nav-link fw-bold py-1 px-0" href="{% url 'my-cart' %}">ตะกร้าสินค้า <span class="badge bg-primary"><font color="white">{{user.profile.cart_quantity}}</font></span></a>
+            {% endif %}
             <a class="nav-link fw-bold py-1 px-0" href="{% url 'about-us' %}">เกี่ยวกับเรา</a>
             <a class="nav-link fw-bold py-1 px-0" href="{% url 'contact' %}">ติดต่อเรา</a>
             <a class="nav-link fw-bold py-1 px-0" href="{% url 'ask' %}">สอบถามข้อมูล</a>
-            <a class="nav-link fw-bold py-1 px-0" href="{% url 'login' %}">Login</a>
+            {% if not user.is_authenticated %}
+              <a class="nav-link fw-bold py-1 px-0" href="{% url 'login' %}">Login</a>
+            {% else %}
+              <a class="nav-link fw-bold py-1 px-0" href="{% url 'logout' %}">Logout</a>
+            {% endif %}
         {% endblock menubar %}
 
       </nav>

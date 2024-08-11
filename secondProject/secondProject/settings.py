@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'myapp',
     'django_summernote',
     'taggit',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [

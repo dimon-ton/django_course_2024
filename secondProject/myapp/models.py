@@ -132,6 +132,20 @@ class Order(models.Model):
         
 
 
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product_id = models.CharField(max_length=100, null=True, blank=True)
+    product_name = models.CharField(max_length=100, null=True, blank=True)
+    price = models.IntegerField(null=True, blank=True)
+    quantity = models.IntegerField(null=True, blank=True)
+    stamp = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    total = models.IntegerField(null=True, blank=True)
+
+
+    def __str__(self):
+        return self.product_name
+
+
 # สร้าง class Tracking Order
 class TrackingOrderID(models.Model):
     tracking_order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="order_id")
@@ -151,11 +165,64 @@ class Profile(models.Model):
     fb_account = models.CharField(max_length=100, default='No Facebook')
     address = models.TextField(null=True, blank=True)
     telephone_number = models.CharField(max_length=8, null=True, blank=True)
+    # เพิ่มใหม่
+    cart_quantity = models.IntegerField(default=0, null=True, blank=True)
+
 
     def __str__(self):
         return self.user.username
+
+class OrderProduct(models.Model):
+    order_id = models.CharField(max_length=100, null=True, blank=True)
+    product_id = models.CharField(max_length=100, null=True, blank=True)
+    product_name = models.CharField(max_length=100, null=True, blank=True)
+    price = models.IntegerField(null=True, blank=True)
+    quantity = models.IntegerField(null=True, blank=True)
+    total_price = models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return self.product_name
+    
+
+class CartOrder(models.Model):
+    order_id = models.CharField(max_length=100)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=100, null=True, blank=True)
+    last_name = models.CharField(max_length=100, null=True, blank=True)
+    tel = models.CharField(max_length=14, null=True, blank=True)
+    email = models.CharField(max_length=50, null=True, blank=True)
+    address = models.TextField()
+    express = models.CharField(max_length=100)
+    payment = models.CharField(max_length=100)
+    other = models.TextField(null=True, blank=True)
+    stamp = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    paid = models.BooleanField(default=False)
+    confirmed = models.BooleanField(default=False)
+    slip = models.ImageField(upload_to="cart-slip/", null=True, blank=True)
+    slip_time = models.DateField(null=True, blank=True)
+    bank_account = models.CharField(
+        max_length=100,
+        choices=[('kbank', 'kbank'), 
+                 ('scb', 'scb'), 
+                 ('tmb', 'tmb'), 
+                 ('bbl', 'bbl'), 
+                 ('kbank', 'kbank'),
+                 ('อื่น ๆ', 'อื่น ๆ'),
+                 ],
+
+         default='kbank'        
+        )
+    
+    payment_id = models.CharField(max_length=100, null=True, blank=True)
+    tracking_number = models.CharField(max_length=100, null=True, blank=True)
+
+
+    def __str__(self):
+        return self.order_id
     
 class Discount(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     percent = models.DecimalField(decimal_places=2, max_digits=10, null=True, blank=True)
     active = models.BooleanField(default=False)
+
+

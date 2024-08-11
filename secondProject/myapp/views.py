@@ -434,3 +434,77 @@ def TrackingOrderId(req, tid):
                }
     
     return render(req, "myapp/tracking-order.html", context)
+
+def AddToCart(req, pid):
+    username = req.user.username
+    user = User.objects.get(username=username)
+    check = Product.objects.get(id=pid)
+
+    try:
+        new_cart = Cart.objects.get(user=user, product_id=str(pid))
+        new_quantity = new_cart.quantity + 1
+        new_cart.quantity = new_quantity
+        calculate  = new_cart.price * new_quantity
+        new_cart.total = calculate
+        new_cart.save()
+
+        count = Cart.objects.filter(user=user)
+        count = sum([c.quantity for c in count])
+
+
+        updated_quantity = Profile.objects.get(user=user)
+        updated_quantity.cart_quantity = count
+        updated_quantity.save()
+
+        return redirect('all-product')
+    
+    except:
+        new_cart = Cart()
+        new_cart.user = user
+        new_cart.product_id = pid
+        new_cart.product_name = check.name
+        new_cart.price = int(check.normal_price)
+        new_cart.quantity = 1
+        calculate  = new_cart.price * new_cart.quantity
+        new_cart.total = calculate
+        new_cart.save()
+
+        count = Cart.objects.filter(user=user)
+        count = sum([c.quantity for c in count])
+
+        updated_quantity = Profile.objects.get(user=user)
+        updated_quantity.cart_quantity = count
+        updated_quantity.save()
+
+        return redirect('all-product')
+
+
+def MyCart(req):
+    username = req.user.username
+    user = User.objects.get(username=username)
+    context = {}
+    if req.method == "POST":
+        data = req.POST.copy()
+        product_id = data.get("product_id")
+        try:
+            item = Cart.objects.get(user=user, product_id=product_id)
+            item.delete()
+            context['status'] = 'delete'
+        except Cart.DoesNotExist:
+            item = None
+
+        count = Cart.objects.filter(user=user)
+        count = sum([c.quantity for c in count])
+        updated_quantity = Profile.objects.get(user=user)
+        updated_quantity.cart_quantity = count
+        updated_quantity.save()
+    mycart = Cart.objects.filter(user=user)
+    count = sum([c.quantity for c in mycart])
+    total = sum([c.total for c in mycart])
+
+    context['mycart'] = mycart
+    context['count']  = count
+    context['total'] = total
+
+
+    return render(req, "myapp/my-cart.html", context)

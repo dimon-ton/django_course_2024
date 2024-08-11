@@ -21,4 +21,7 @@ urlpatterns = [
     path("discount", DiscountPage, name="discount"),
     path("product/<slug:slug>", ProductDetail, name="product-detail"),
     path("tracking-order/<str:tid>/", TrackingOrderId, name="tracking-order-page"),
+    # Cart
+    path("add-to-cart/<int:pid>/", AddToCart, name="add-to-cart"),
+    path("cart", MyCart, name="my-cart"),
 ]
