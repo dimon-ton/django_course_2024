@@ -16,8 +16,11 @@ import random
 
 
 def Home(req):
-    return HttpResponse("<h1>hello world</h1>")
-
+    if req.user.is_authenticated:
+        first_name = req.user.first_name
+        return HttpResponse(f"<h1>hello {first_name}</h1>")
+    else:
+        return HttpResponse(f"<h1>hello World</h1>")
 
 def myShop(req):
     return render(req, "myapp/home.html")
@@ -268,7 +271,7 @@ def Login(req):
                 user = authenticate(username=email,password=password)
                 login(req, user)
                 print("login complete")
-                return redirect('shop')
+                return redirect('home')
             except:
                 context['wrongpassword'] = 'wrongpassword'
 
@@ -279,7 +282,7 @@ def Login(req):
 
 def logout_view(req):
     logout(req)
-    return render(req, 'myapp/logout.html')
+    return render(req, 'myapp/login.html')
 
 
 def AllProduct(req):
@@ -508,3 +511,50 @@ def MyCart(req):
 
 
     return render(req, "myapp/my-cart.html", context)
+
+
+def MyCartEdit(req):
+    username = req.user.username
+    user = User.objects.get(username=username)
+
+    if req.method == "POST":
+        data = req.POST.copy()
+
+        print(data)
+
+        if data.get("clear") == "clear":
+            Cart.objects.filter(user=user).delete()
+            updated_quantity = Profile.objects.get(user=user)
+            updated_quantity.cart_quantity = 0
+            updated_quantity.save()
+
+            return redirect("my-cart")
+        
+        edit_list = []
+        for k, v in data.items():
+            if k[:2] == "pd":
+                pid = int(k.split("_")[1])
+                dt = [pid, int(v)]
+                edit_list.append(dt)
+
+        for ed in edit_list:
+            edit_cart = Cart.objects.get(product_id=ed[0], user=user)
+            edit_cart.quantity = ed[1]
+            calculate = edit_cart.price * ed[1]
+            edit_cart.total = calculate
+            edit_cart.save()
+
+        count = Cart.objects.filter(user=user)
+        count = sum([c.quantity for c in count])
+        updated_quantity = Profile.objects.get(user=user)
+        updated_quantity.cart_quantity = count
+        updated_quantity.save()
+
+        return redirect("my-cart")
+    
+
+    context = {}
+    mycart = Cart.objects.filter(user=user)
+    context["mycart"] = mycart
+
+    return render(req, "myapp/my-cart-edit.html", context)

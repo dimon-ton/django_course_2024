@@ -24,4 +24,5 @@ urlpatterns = [
     # Cart
     path("add-to-cart/<int:pid>/", AddToCart, name="add-to-cart"),
     path("cart", MyCart, name="my-cart"),
+    path("edit-cart", MyCartEdit, name="my-cart-edit"),
 ]
