@@ -26,4 +26,5 @@ urlpatterns = [
     path("cart", MyCart, name="my-cart"),
     path("edit-cart", MyCartEdit, name="my-cart-edit"),
     path("checkout", Checkout, name="checkout"),
+    path("orders", CartOrderProduct, name="cart-order-product"),
 ]

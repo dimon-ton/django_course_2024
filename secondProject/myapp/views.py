@@ -641,3 +641,39 @@ def Checkout(req):
             return redirect('upload-slip-order', order_id=order_id)
         
     return render(req, 'myapp/checkout.html')
+
+def CartOrderProduct(req):
+    username = req.user.username
+    user = User.objects.get(username=username)
+
+    context = {}
+
+    cart_order = CartOrder.objects.filter(user=user)
+
+    for co in cart_order:
+        order_id = co.order_id
+        order_product = OrderProduct.objects.filter(order_id=order_id)
+        total = sum([o.tatal for o in order_product])
+        co.total = total
+        count = sum([o.quantity for o in order_product])
+
+        if co.express == "flash":
+            shipping_cost = sum([20 if i == 0 else 10 for i in range(count)])
+        elif co.express == "kerry":
+            shipping_cost = sum([20 if i == 0 else 8 for i in range(count)])
+        elif co.express == "jst":
+            shipping_cost = sum([20 if i == 0 else 9 for i in range(count)])
+        elif co.express == "thailandpost":
+            shipping_cost = sum([20 if i == 0 else 12 for i in range(count)])
+        else:
+            shipping_cost = sum([20 if i == 0 else 11 for i in range(count)])
+
+        if co.payment == "cod":
+            shipping_cost += 10
+
+        co.shipping_cost = shipping_cost
+
+
+    context["cart_order"] = cart_order
+
+    return render(req, "myapp/cart-order-product.html", context)
