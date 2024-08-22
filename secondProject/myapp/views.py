@@ -617,7 +617,7 @@ def Checkout(req):
                 cart_order.product_name = mc.product_name
                 cart_order.price = mc.price
                 cart_order.quantity = mc.quantity
-                cart_order.total = mc.total
+                cart_order.total_price = mc.total
                 cart_order.save()
 
             new_order = CartOrder()
@@ -653,8 +653,8 @@ def CartOrderProduct(req):
     for co in cart_order:
         order_id = co.order_id
         order_product = OrderProduct.objects.filter(order_id=order_id)
-        total = sum([o.tatal for o in order_product])
-        co.total = total
+        total = sum([o.total_price for o in order_product])
+        co.total_price = total
         count = sum([o.quantity for o in order_product])
 
         if co.express == "flash":
@@ -677,3 +677,53 @@ def CartOrderProduct(req):
     context["cart_order"] = cart_order
 
     return render(req, "myapp/cart-order-product.html", context)
+
+def UploadSlipOrder(req, order_id):
+    if req.method == "POST" and req.FILES['upload_slip']:
+        data = req.POST.copy()
+
+        slip_time = data.get('slip_time')
+        bank_account = data.get("bank_account")
+
+        updated_cart_order = CartOrder.objects.get(order_id=order_id)
+        updated_cart_order.slip_time = slip_time
+        updated_cart_order.bank_account = bank_account
+
+        file_image_slip = req.FILES['upload_slip']
+        file_image_name = req.FILES['upload_slip'].name.replace(" ", "")
+        file_system_storage = FileSystemStorage()
+        file_name = file_system_storage.save(file_image_name, file_image_slip)
+        upload_file_url = file_system_storage.url(file_name)
+        updated_cart_order.slip = upload_file_url[6:]
+
+        updated_cart_order.save()
+
+    order_product = OrderProduct.objects.filter(order_id=order_id)
+    total = sum([o.total_price for o in order_product])
+    cart_order_detail = CartOrder.objects.get(order_id=order_id)
+    count = sum([o.quantity for o in order_product])
+
+    if cart_order_detail.express == 'flash':
+        shipping_cost = sum([20 if i == 0 else 10 for i in range(count)])
+    elif cart_order_detail.express == 'kerry':
+        shipping_cost = sum([20 if i == 0 else 8 for i in range(count)])
+    elif cart_order_detail == 'jst':
+        shipping_cost = sum([20 if i == 0 else 9 for i in range(count)])
+    elif cart_order_detail.express == 'thailandpost':
+        shipping_cost = sum([20 if i == 0 else 12 for i in range(count)])
+    else:
+        shipping_cost = sum([20 if i == 0 else 11 for i in range(count)])
+
+
+    if cart_order_detail.payment == 'cod':
+        shipping_cost += 10
+
+    context = {"order_id": order_id, 
+               "total": total, 
+               "shipping_cost": shipping_cost,
+               "grand_total": total + shipping_cost,
+               "cart_order_detail": cart_order_detail,
+               "count": count
+               }
+
+    return render(req, "myapp/upload-slip-order.html", context)

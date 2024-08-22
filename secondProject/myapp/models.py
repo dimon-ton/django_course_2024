@@ -178,7 +178,7 @@ class OrderProduct(models.Model):
     product_name = models.CharField(max_length=100, null=True, blank=True)
     price = models.IntegerField(null=True, blank=True)
     quantity = models.IntegerField(null=True, blank=True)
-    total_price = models.IntegerField(null=True, blank=True)
+    total_price = models.IntegerField(default=0, null=True, blank=True)
 
     def __str__(self):
         return self.product_name
@@ -215,6 +215,8 @@ class CartOrder(models.Model):
     
     payment_id = models.CharField(max_length=100, null=True, blank=True)
     tracking_number = models.CharField(max_length=100, null=True, blank=True)
+    total_price = models.IntegerField(null=True, blank=True)
+    shipping_cost = models.IntegerField(null=True, blank=True)
 
 
     def __str__(self):

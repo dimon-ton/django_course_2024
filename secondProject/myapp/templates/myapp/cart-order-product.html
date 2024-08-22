@@ -23,32 +23,38 @@
           <th>ยอดรวมทั้งหมด</th>
           <th>สถานะ</th>
         </tr>
-      
+        {% for co in cart_order %}
         <tr style="font-size: 14px;">
-          <td><a href="" style="font-size: 14px;"></a></td>
-          <td></td>
+          <td><a href="" style="font-size: 14px;">{{ co.order_id }}</a></td>
+          <td>{{ co.stamp }}</td>
           <td>
-            
+            {% if co.tracking_number != None %}
+              {{ co.tracking_number }}
+
+            {% endif %}
           </td>
           <td>
-            
+            {{ co.shipping_cost | intcomma }}
           </td>
-          <td></td>
           <td>
-            
+            {{ co.total_price | intcomma }}
           </td>
           <td>
            
+            {{ co.total_price | add:co.shipping_cost | intcomma }}
+          </td>
+          <td>
+           {% if co.paid %}
             <i class="fa fa-check-square-o" style="font-size:14px;color:#ff0000;"> จ่ายแล้ว </i>
-            
+          {% else %}
    
-            <a href=""style="font-size:14px;color:#2a8df4;" class="button-darken-blue">
+            <a href="{% url 'upload-slip-order' co.order_id %}" style="font-size:14px;color:#2a8df4;" class="button-darken-blue">
               อัปโหลดใบบิล
             </a> 
-           
+           {% endif %}
           </td>
         </tr>
-       
+       {% endfor %}
     </table>
     <div style="padding: 5px"></div>
     

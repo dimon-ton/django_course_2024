@@ -27,4 +27,5 @@ urlpatterns = [
     path("edit-cart", MyCartEdit, name="my-cart-edit"),
     path("checkout", Checkout, name="checkout"),
     path("orders", CartOrderProduct, name="cart-order-product"),
+    path("upload-slip/<str:order_id>/", UploadSlipOrder , name="upload-slip-order"),
 ]
