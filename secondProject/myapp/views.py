@@ -727,3 +727,59 @@ def UploadSlipOrder(req, order_id):
                }
 
     return render(req, "myapp/upload-slip-order.html", context)
+
+def CustomerAllOrder(req):
+    context = {}
+    cart_order = CartOrder.objects.all().order_by("-id") # reverse order by plus "-"
+    for co in cart_order:
+        order_id = co.order_id
+        order_product = OrderProduct.objects.filter(order_id=order_id)
+        total = sum([o.total_price for o in order_product])
+        co.total_price = total
+        count = sum([o.quantity for o in order_product])
+
+        if co.express == 'flash':
+            shipping_cost = sum([20 if i == 0 else 10 for i in range(count)])
+        elif co.express == 'kerry':
+            shipping_cost = sum([20 if i == 0 else 8 for i in range(count)])
+        elif co == 'jst':
+            shipping_cost = sum([20 if i == 0 else 9 for i in range(count)])
+        elif co.express == 'thailandpost':
+            shipping_cost = sum([20 if i == 0 else 12 for i in range(count)])
+        else:
+            shipping_cost = sum([20 if i == 0 else 11 for i in range(count)])
+
+        if co.express == "cod":
+            shipping_cost += 10
+
+        co.shipping_cost = shipping_cost
+
+
+    context["cart_order"] = cart_order
+    return render(req, "myapp/customer-all-order.html", context)
+
+
+def UpdatePaid(req, order_id, status):
+    try:
+        if req.user.profile.usertype != 'admin':
+            return redirect("home")
+        
+    except:
+        return render('all-product')
+    
+    cart_order = CartOrder.objects.get(order_id=order_id)
+    if status == "confirm":
+        cart_order.paid = True
+        cart_order.confirmed = True
+        order_product = OrderProduct.objects.filter(order_id=order_id)
+
+        for op in order_product:
+            product = Product.objects.get(id=op.product_id)
+            product.quantity = product.quantity - op.quantity
+            product.save()
+    elif status == "cancel":
+        cart_order.paid = False
+        cart_order.confirmed = False
+    cart_order.save()
+
+    return redirect("customer-all-order")
