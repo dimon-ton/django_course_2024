@@ -25,7 +25,7 @@
         </tr>
         {% for co in cart_order %}
         <tr style="font-size: 14px;">
-          <td><a href="" style="font-size: 14px;">{{ co.order_id }}</a></td>
+          <td><a href="{% url 'my-order' co.order_id %}" style="font-size: 14px;">{{ co.order_id }}</a></td>
           <td>{{ co.stamp }}</td>
           <td>
             {% if co.tracking_number != None %}

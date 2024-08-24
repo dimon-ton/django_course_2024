@@ -21,7 +21,7 @@
       </tr>
       {% for co in cart_order %}
       <tr style="font-size: 14px">
-        <td><a href="#" style="font-size: 14px">{{ co.order_id }}</a></td>
+        <td><a href="{% url 'cart-order-update-tracking' co.order_id %}" style="font-size: 14px">{{ co.order_id }}</a></td>
         <td>{{ co.first_name }}</td>
         <td>{{ co.stamp }}</td>
         <td>

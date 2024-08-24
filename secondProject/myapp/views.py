@@ -783,3 +783,93 @@ def UpdatePaid(req, order_id, status):
     cart_order.save()
 
     return redirect("customer-all-order")
+
+
+def CartOrderUpdateTracking(req, order_id):
+    # try:
+    #     if req.user.profile.usertype != 'admin':
+    #         return redirect("home")
+        
+    # except:
+    #     return render('all-product')
+    
+    if req.method == 'POST':
+        cart_order = CartOrder.objects.get(order_id=order_id)
+        data = req.POST.copy()
+
+        tracking_number = data.get('tracking_number')
+        cart_order.tracking_number = tracking_number
+        cart_order.save()
+
+        return redirect("customer-all-order")
+
+    cart_order = CartOrder.objects.get(order_id=order_id)
+    order_product = OrderProduct.objects.filter(order_id=order_id)
+
+
+
+    total = sum([o.total_price for o in order_product])
+    cart_order.total_price = total
+    count = sum([o.quantity for o in order_product])
+
+
+    if cart_order.express == 'flash':
+        shipping_cost = sum([20 if i == 0 else 10 for i in range(count)])
+    elif cart_order.express == 'kerry':
+        shipping_cost = sum([20 if i == 0 else 8 for i in range(count)])
+    elif cart_order == 'jst':
+        shipping_cost = sum([20 if i == 0 else 9 for i in range(count)])
+    elif cart_order.express == 'thailandpost':
+        shipping_cost = sum([20 if i == 0 else 12 for i in range(count)])
+    else:
+        shipping_cost = sum([20 if i == 0 else 11 for i in range(count)])
+
+    if cart_order.express == "cod":
+        shipping_cost += 10
+    cart_order.shipping_cost = shipping_cost
+
+    context = {"cart_order": cart_order, 
+               "order_product": order_product,
+               "total": total, 
+               "count": count,
+               }
+
+    return render(req, "myapp/cart-order-update-tracking.html", context)
+
+def MyOrder(req, order_id):
+    username = req.user.username
+    user = User.objects.get(username=username)
+
+    cart_order = CartOrder.objects.get(order_id=order_id)
+    if user != cart_order.user:
+        return redirect('all-product')
+    
+    order_product = OrderProduct.objects.filter(order_id=order_id)
+
+    total = sum([o.total_price for o in order_product])
+    cart_order.total_price = total
+    count = sum([o.quantity for o in order_product])
+
+
+    if cart_order.express == 'flash':
+        shipping_cost = sum([20 if i == 0 else 10 for i in range(count)])
+    elif cart_order.express == 'kerry':
+        shipping_cost = sum([20 if i == 0 else 8 for i in range(count)])
+    elif cart_order == 'jst':
+        shipping_cost = sum([20 if i == 0 else 9 for i in range(count)])
+    elif cart_order.express == 'thailandpost':
+        shipping_cost = sum([20 if i == 0 else 12 for i in range(count)])
+    else:
+        shipping_cost = sum([20 if i == 0 else 11 for i in range(count)])
+
+    if cart_order.express == "cod":
+        shipping_cost += 10
+    cart_order.shipping_cost = shipping_cost
+
+    context = {"cart_order": cart_order,
+               "order_product": order_product,
+               "total": total,
+               "count": count,
+               }
+    
+    return render(req, "myapp/my-order.html", context)
