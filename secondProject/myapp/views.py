@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from .models import *
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 
 # manage about register
 from django.contrib.auth.models import User
@@ -14,7 +15,6 @@ from django.core.files.storage import FileSystemStorage
 import string
 import random
 from datetime import datetime
-
 
 def Home(req):
     if req.user.is_authenticated:
@@ -873,3 +873,75 @@ def MyOrder(req, order_id):
                }
     
     return render(req, "myapp/my-order.html", context)
+
+def AllMachine (req):
+
+    machines = Machine.objects.filter(available=True)
+    context = {"machines": machines}
+
+    return render(req, "myapp/machines.html", context)
+
+def MachineDetail(req, machine_id):
+
+    machines = Machine.objects.all().order_by("id").reverse()[:6]
+    machine = get_object_or_404(Machine, id=machine_id)
+    comments = Comments.objects.filter(machine=machine, parent=None)
+
+    username = req.user.username
+    user = User.objects.get(username=username)
+
+    if req.method == "POST":
+        data = req.POST.copy()
+
+        content = data.get("content")
+        name = data.get("name")
+        email = data.get("email")
+        website = data.get("website")
+        parent_id = data.get("parent")
+
+
+        parent_obj = None
+        
+        if content:
+            if parent_id:
+                parent_obj = Comments.objects.get(id=parent_id)
+                comment_reply = Comments(
+                    author=user,
+                    content=content,
+                    parent=parent_obj,
+                    machine=machine,
+                    name=name,
+                    email=email,
+                    website=website,
+                )
+
+                comment_reply.save()
+
+                return HttpResponseRedirect(
+                    reverse("machine-detail-page", kwargs={"machine_id": machine_id})
+                )
+
+            else:
+                comment = Comments(
+                    author=user,
+                    content=content,
+                    machine=machine,
+                    name=name,
+                    email=email,
+                    website=website,
+                )
+
+                comment.save()
+
+                return HttpResponseRedirect(
+                    reverse("machine-detail-page", kwargs={"machine_id": machine_id})
+                )
+            
+
+    context = {"machines": machines, "comments": comments, "machine": machine}
+
+    return render(req, "myapp/machine-detail.html", context)
+
+
+
+    

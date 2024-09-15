@@ -215,7 +215,10 @@ href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel
 
         {% block menubar %}
             <a class="nav-link fw-bold py-1 px-0" aria-current="page" href="{% url 'shop' %}">หน้าแรก</a>
-            <a class="nav-link fw-bold py-1 px-0" href="#">สินค้า</a>
+            <a class="nav-link fw-bold py-1 px-0" href="{% url 'all-product' %}">สินค้า</a>
+            {% if user.is_authenticated and user.profile.usertype == 'member' %}
+            <a class="nav-link fw-bold py-1 px-0" href="{% url 'all-machine-page' %}">การเช่าสินค้าต่าง ๆ</a>
+            {% endif %}
             <a class="nav-link fw-bold py-1 px-0" href="{% url 'post' %}">บทความ</a>
             <a class="nav-link fw-bold py-1 px-0" href="{% url 'tracking' %}">เช็คเลข Tracking</a>
             {% if user.is_authenticated and user.profile.usertype == 'member' %}

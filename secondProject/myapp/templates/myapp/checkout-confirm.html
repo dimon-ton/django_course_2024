@@ -112,57 +112,6 @@
 
   </div>
 
-  ชื่อผู้รับ: {{ first_name }} {{ last_name }} <br />
-        เบอร์โทรผู้รับ: {{ tel }}<br />
-        อิเมล์: {{ email }}<br />
-        ที่อยู่สำหรับการจัดส่ง: {{ address }}<br />
-        {% if express == 'flash' %}
-            ประเภทการจัดส่ง: Flash
-        {% elif express == 'kerry' %}
-            ประเภทการจัดส่ง: Kerry
-        {% elif express == 'j&t' %} 
-            ประเภทการจัดส่ง: J&T
-        {% elif express == 'thailandpost' %} 
-            ประเภทการจัดส่ง: Thailand Post
-        {% else %}
-            ประเภทการจัดส่ง: ขนส่งอื่นๆ
-        {% endif %}<br/> 
-        
-        {% if payment == 'paynow' %}
-            ชำระผ่าน: เก็บเงินต้นทาง 
-        {% elif payment == 'cod' %}
-            ชำระผ่าน: เก็บเงินปลายทาง 
-        {% elif payment == 'transfer' %}
-            ชำระผ่าน: โอนเงินเข้าบัญชีธนาคาร
-        {% else %}
-            ชำระผ่าน: ชำระผ่านช่องทางอื่นๆ 
-        {% endif %}<br/>
-      หมายเหด: {{other}}<br />
-
-   <table class="table">
-        <tr>
-          <th>ไอดี</th>
-          <th>ชื่อสินค้า</th>
-          <th>ราคา</th>
-          <th>จำนวน</th>
-          <th>ยอดรวม</th>
-        </tr>
-        {% for mc in mycart %}
-        <tr>
-          <td>{{ mc.product_id}}</td>
-          <td>{{ mc.product_name }}</td>
-          <td>{{ mc.price|intcomma }}</td>
-          <td>{{ mc.quantity|intcomma }}</td>
-          <td>{{ mc.total|intcomma }}</td>
-        </tr>
-        {% endfor %}
-        <tr>
-          <td><h5>ยอดรวม</h5></td>
-          <td></td>
-          <td></td>
-          <td><h5>{{ count|intcomma }}</h5></td>
-          <td><h5>{{ total|intcomma }}</h5></td>
-        </tr>
-    </table>
+ 
 
 {% endblock content %}

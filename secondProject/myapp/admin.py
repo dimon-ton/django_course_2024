@@ -58,3 +58,22 @@ class CartOrderAdmin(admin.ModelAdmin):
     list_display =['user', 'first_name', 'last_name']
 
 admin.site.register(CartOrder, CartOrderAdmin)
+
+
+# ///////////////////// เพิ่มใหม่ ////////////////////////
+class MachineAdmin(admin.ModelAdmin):
+    list_display =['name', 'model', 'year']
+
+admin.site.register(Machine, MachineAdmin)
+
+
+class ReservationAdmin(admin.ModelAdmin):
+    list_display =['customer_name', 'tel', 'email']
+
+admin.site.register(Reservation, ReservationAdmin)
+
+
+class CommentsAdmin(admin.ModelAdmin):
+    list_display =['content', 'name', 'email']
+
+admin.site.register(Comments, CommentsAdmin)
