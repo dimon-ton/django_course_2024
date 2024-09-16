@@ -36,4 +36,5 @@ urlpatterns = [
     # Machine
     path("machines", AllMachine, name="all-machine-page"),
     path("machine/<int:machine_id>/", MachineDetail, name="machine-detail-page"),
+    path("machine/<int:machine_id>/reserve", MakeReservation, name="make-reservation-page"),
 ]

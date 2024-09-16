@@ -1,6 +1,7 @@
 {% extends 'myapp/base.html' %}
 
 {% load static %}
+
 {% block title %} My Cart {% endblock title %}
 
 {% block content %}
@@ -27,7 +28,7 @@
                 <p>ราคา {{ machine.price_per_day }} ต่อวัน</p>
                 <div style="padding-top: 20px"></div>
                 <div class="row text-left">
-                    <a href="#" class="btn btn-primary btn-sm">ไปที่รายการเช่า</a>
+                    <a href="{% url 'make-reservation-page' machine.id %}" class="btn btn-primary btn-sm">ไปที่รายการเช่า</a>
                 </div>
                 <div style="padding-top: 100px"></div>
 
@@ -83,7 +84,7 @@
                         <div class="public-reply pl-8 border-l-2 border-gray-200 mt-4 text-right">
                             <div class="author flex items-center flex-row-reverse mb-2">
                                 <div class="profile-pic ml-4">
-                                    <img class="w-10 h-10 rounded-full" src="{% static 'images/2.jpg' %}" alt="" />
+                                    <img class="w-10 h-10 rounded-full" src="{% static 'images/person.jpg' %}" alt="" />
                                 </div>
                                 <div class="details text-right">
                                     <p class="font-semibold text-md">{{ reply.name }}</p>

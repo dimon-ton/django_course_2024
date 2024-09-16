@@ -943,5 +943,71 @@ def MachineDetail(req, machine_id):
     return render(req, "myapp/machine-detail.html", context)
 
 
+def MakeReservation(req, machine_id):
 
-    
+    machine = get_object_or_404(Machine, id=machine_id)
+
+    context = {"machine": machine, "machine_price": machine.price_per_day}
+
+    if machine.price_discount > 0:
+        price_discount1 = (machine.price_discount * 100) / machine.price_per_day
+        context["price_discount1"] = 100 - int(price_discount1)
+        context["machine_price"] = machine.price_discount
+
+
+
+    if req.method == "POST":
+        try:
+            data = req.POST.copy()
+            id_card = data.get("id_card")
+            customer_name = data.get("customer_name")
+            tel = data.get("tel")
+            email = data.get("email")
+            rental_price = float(data.get("rental_price", 0))
+            total_rental_price = float(data.get("total_rental_price", 0))
+            start_date = data.get("start_date")
+            end_date = data.get("end_date")
+            
+
+            try:
+                if "upload_slip" in req.FILES:
+                    file_image = req.FILES["upload_slip"]
+                    file_image_name = file_image.name.replace(" ", "")
+                    file_system_storage = FileSystemStorage()
+                    file_name = file_system_storage.save(
+                        "machine-slip/" + file_image_name, file_image
+                        )
+                    
+                    upload_file_url = file_system_storage.url(file_name)
+                    slip = upload_file_url[6:]
+                else:
+                    slip = "/default.png"
+
+            except Exception as e:
+
+                slip = "/default.png"
+
+            reservation = Reservation.objects.create(
+                machine=machine,
+                id_card=id_card,
+                customer_name=customer_name,
+                tel=tel,
+                email=email,
+                rental_price=rental_price,
+                total_rental_price=total_rental_price,
+                start_date=start_date,
+                end_date=end_date,
+                slip=slip,
+            )
+
+            machine.available = False
+            machine.save()
+
+            return redirect("all-machine-page")
+
+        except Exception as e:
+            context = {"error": f"เกิดข้อผิดพลาดที่ไม่คาดคิด: {e}"}
+
+            return render(req, "myapp/make-reservation.html", context)
+
+    return render(req, "myapp/make-reservation.html", context)
