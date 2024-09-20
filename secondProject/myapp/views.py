@@ -272,7 +272,7 @@ def Login(req):
                 user = authenticate(username=email,password=password)
                 login(req, user)
                 print("login complete")
-                return redirect('home')
+                return redirect('shop')
             except:
                 context['wrongpassword'] = 'wrongpassword'
 
@@ -283,7 +283,7 @@ def Login(req):
 
 def logout_view(req):
     logout(req)
-    return render(req, 'myapp/login.html')
+    return redirect('login')
 
 
 def AllProduct(req):
@@ -879,6 +879,7 @@ def AllMachine (req):
     machines = Machine.objects.filter(available=True)
     context = {"machines": machines}
 
+
     return render(req, "myapp/machines.html", context)
 
 def MachineDetail(req, machine_id):
@@ -1011,3 +1012,10 @@ def MakeReservation(req, machine_id):
             return render(req, "myapp/make-reservation.html", context)
 
     return render(req, "myapp/make-reservation.html", context)
+
+
+def Wishlists(req):
+    wishlist, created = Wishlist.objects.get_or_create(user=req.user)
+    context = {"wishlist": wishlist}
+
+    return render(req, "myapp/wishlist.html", context)

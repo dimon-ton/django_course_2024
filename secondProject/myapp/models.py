@@ -258,7 +258,7 @@ class Reservation(models.Model):
     tel = models.CharField(max_length=11)
     email = models.CharField(max_length=50, null=True, blank=True)
     rental_price = models.IntegerField(default=0)
-    total_rental_price = models.ImageField(default=0)
+    total_rental_price = models.IntegerField(default=0)
     start_date = models.DateField()
     end_date = models.DateField()
     slip = models.ImageField(upload_to="machine-slip/", null=True, blank=True)
@@ -280,6 +280,21 @@ class Comments(models.Model):
 
 
 
+class Wishlist(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username}'s wishlist"
+    
+
+class WishlistItem(models.Model):
+    wishlist = models.ForeignKey(Wishlist, related_name='items', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    added_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.product.name} in {self.wishlist.user.username}'s wishlist"
 
 
 

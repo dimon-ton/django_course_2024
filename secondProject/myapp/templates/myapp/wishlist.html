@@ -1,0 +1,73 @@
+{% extends 'myapp/base.html' %} 
+
+{% load static %} 
+
+{% block title %} My Cart {%endblock title %} 
+
+{% block content %}
+
+
+<br><br><br>
+
+
+   <div class="pricing-header p-3 pb-md-4 mx-4 text-center">
+
+    {% if user.is_authenticated and user.profile.usertype == 'vip' and user.discount.active == False %}
+
+      <h2 class="text-white">คุณได้รับส่วนลดพิเศษ <a href="{% url 'discount' %}">คลิกเลย</a></h2>
+
+    {% endif %}
+
+      <h1 class="display-4 fw-normal text-body-emphasis">ร้านค้า</h1>
+      <p class="fs-5 text-body-secondary">ร้านขายของ ลุง</p>
+  </div>
+
+  {% if wishlist.items.exists %}
+
+  <div class="row row-cols-1 row-cols-md-3 mb-3 text-left">
+
+    {% for item in wishlist.items.all %}
+    <div class="col">
+      <div class="card mb-4 rounded-3 shadow-sm">
+        <img src="{{ item.prouct.image_url }}" class="card-img-top" alt="{{ item.product.name }}">
+        <div class="card-header py-3">
+          <h4 class="my-0 fw-normal">{{ item.product.name }}</h4>
+        </div>
+        <div class="card-body">
+          <h1 class="card-title pricing-card-title">{{ product.normal_price }}<small class="text-body-secondary fw-light">THB</small></h1>
+          <ul class="list-unstyled mt-3 mb-4">
+            <li><small>ชนิดสินค้า: </small>{{ item.product.category.category_name }}</li>
+            <li><small>จำนวน: </small>{{ item.product.quantity }}</li>
+          </ul>
+          <p>{{ product.detail }}</p>
+          <div class="text-right">
+            {% if user.is_authenticated and user.profile.usertype == 'member' %}
+              <a class="btn btn-sm btn btn-outline-primary" href="{% url 'add-to-cart' product.id %}" role="button">เพิ่มไปยังตะกร้าสินค้า</a>
+              <button type="button" class="btn btn-sm btn-outline-primary" onclick="redirectToOrderPage('{{ product.slug }}')">สั่งซื้อ</button>
+            {% else %}
+              <button type="button" class="btn btn-sm btn-outline-primary" disabled>สั่งซื้อ</button>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+    <p class="text-gray-500">ไม่มี wishlist</p>
+{% endif %}
+
+
+<script>
+  function redirectToOrderPage(slug) {
+      // Assuming you have the parameter value available in a variable
+      const paramValue = slug; // You can dynamically set this value as needed
+      window.location.href = "{% url 'product-detail' 'PLACEHOLDER' %}".replace('PLACEHOLDER', paramValue);
+  }
+</script>
+
+
+
+
+
+{% endblock content %}

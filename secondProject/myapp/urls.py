@@ -13,10 +13,15 @@ urlpatterns = [
     path("anwser/<int:askid>", anwser, name="answer"),
     path("blogs", PostPage, name="post"),
     path("blog-detail/<slug:slug>/", postDetail, name="blog-detail"),
+
+
+
     # register and login page  
     path("register", register, name="register"),
     path("login", Login, name="login"),
     path("logout",logout_view, name="logout"),
+
+
     path("products", AllProduct, name="all-product"),
     path("discount", DiscountPage, name="discount"),
     path("product/<slug:slug>", ProductDetail, name="product-detail"),
@@ -37,4 +42,7 @@ urlpatterns = [
     path("machines", AllMachine, name="all-machine-page"),
     path("machine/<int:machine_id>/", MachineDetail, name="machine-detail-page"),
     path("machine/<int:machine_id>/reserve", MakeReservation, name="make-reservation-page"),
+
+    # wishlist
+    path("wishlist", Wishlists, name="wishlist-page"),
 ]
