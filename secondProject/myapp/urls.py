@@ -45,4 +45,7 @@ urlpatterns = [
 
     # wishlist
     path("wishlist", Wishlists, name="wishlist-page"),
+    path("wishlist/add/<int:product_id>/", AddWishlist, name="add-to-wishlist-page"),
+    path("wishlist/remove/<int:item_id>/", RemovefromWishlist, name="remove-from-wishlist-page"),
+
 ]

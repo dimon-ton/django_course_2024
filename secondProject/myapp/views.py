@@ -1019,3 +1019,26 @@ def Wishlists(req):
     context = {"wishlist": wishlist}
 
     return render(req, "myapp/wishlist.html", context)
+
+def AddWishlist(req, product_id):
+
+    product = get_object_or_404(Product, id=product_id)
+    wishlist, created = Wishlist.objects.get_or_create(user=req.user)
+    wishlist_item, created = WishlistItem.objects.get_or_create(
+        product=product, wishlist=wishlist
+    )
+
+    if not created:
+        wishlist_item.delete()
+
+    return redirect("all-product")
+
+
+def RemovefromWishlist(req, item_id):
+
+    Wishlist_item = get_object_or_404(WishlistItem, id=item_id)
+
+    if Wishlist_item.wishlist.user == req.user:
+        Wishlist_item.delete()
+
+    return redirect("wishlist-page")
