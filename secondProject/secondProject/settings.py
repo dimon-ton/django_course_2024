@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'myapp',
+    'pos',
     'django_summernote',
     'taggit',
     'django.contrib.humanize',
@@ -59,7 +60,10 @@ ROOT_URLCONF = 'secondProject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'myapp/templates'],
+        'DIRS': [
+            BASE_DIR / 'myapp/templates', 
+            BASE_DIR / 'pos/templates'
+            ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,6 +78,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'secondProject.wsgi.application'
 
+SITE_URL = 'http://192.168.85.19:8000'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
