@@ -1,0 +1,40 @@
+{% extends 'myapp/base.html' %}
+
+{% block title %} Scan Qr Code {% endblock title %}
+
+{% load static %}
+{% block content %}
+
+<div style="padding-top: 100px;"></div>
+  <div class="container ">
+    <div class="row">
+         {% for table in all_table %}
+      <div class="col-md-2 course-item m-1 p-4 bg-white shadow-lg rounded-lg text-dark">
+        <div class="text-center">
+            <h1 class="text-lg font-bold">Uncle Restaurant</h1>
+        </div>
+        <div class="border-t mt-2 pt-2">
+          <span><p>โต๊ะ: {{ table.number }}</p></span>
+          
+        </div>
+        <div class="border-t mt-2 pt-2">
+          <h3 class="text-lg font-bold">Scan to Order</h3>
+            <p>สะแกนสั่งอาหาร</p>
+            <a href="">
+                {% if table.qr_code %}
+                    <div class="qr-code img-responsive my-4 d-flex justify-content-center align-items-center">
+                        <img src="{{ table.qr_code.url }}" id="qrcode_frame"  frameborder="0" width="auto" height="auto"/>
+                    </div>
+                {% else %}
+                    <img src="{ static 'images/hero.png'}" id="qrcode_frame"  frameborder="0" width="auto" height="auto"/>
+                {% endif %}
+          </a> 
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+    <br>
+</div>
+
+
+{% endblock content %}
