@@ -20,7 +20,7 @@
         <div class="border-t mt-2 pt-2">
           <h3 class="text-lg font-bold">Scan to Order</h3>
             <p>สะแกนสั่งอาหาร</p>
-            <a href="">
+            <a href="{% url 'order-menu' table.id %}">
                 {% if table.qr_code %}
                     <div class="qr-code img-responsive my-4 d-flex justify-content-center align-items-center">
                         <img src="{{ table.qr_code.url }}" id="qrcode_frame"  frameborder="0" width="auto" height="auto"/>
