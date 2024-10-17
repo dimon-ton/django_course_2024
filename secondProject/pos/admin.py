@@ -37,3 +37,10 @@ class OrderMenuItemAdmin(admin.ModelAdmin):
 
 
 admin.site.register(OrderMenuItem, OrderMenuItemAdmin)
+
+
+class PromotionItemAdmin(admin.ModelAdmin):
+    list_display = ["name"]
+
+
+admin.site.register(Promotion, PromotionItemAdmin)

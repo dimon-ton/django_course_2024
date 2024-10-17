@@ -46,6 +46,9 @@ class Menu(models.Model):
     price = models.FloatField(default=0)
     quantity = models.IntegerField(default=1)
     available = models.BooleanField(default=True)
+    is_new = models.BooleanField(default=False)
+    is_promotion = models.BooleanField(default=False)
+    # add new
     images = models.ImageField(upload_to="menu-images/")
     unit = models.CharField(max_length=20, default="แก้ว")
 
@@ -61,7 +64,8 @@ class OrderMenu(models.Model):
     vat = models.FloatField(default=0)
     final_price_with_vat = models.FloatField(default=0)
     order_date = models.DateTimeField(auto_now_add=True)
-    order_time = models.TimeField(auto_now_add=True)
+    # แก้ไข Field นี้
+    order_time = models.DateTimeField(auto_now_add=True)
 
     status = models.CharField(max_length=20, choices=[
         ('pending', 'รอดำเนินการ'), 
@@ -84,3 +88,16 @@ class OrderMenuItem(models.Model):
 
     def __str__(self):
         return f"{self.order_menu.table.number} {self.menu.name}"
+    
+class Promotion(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    discount_percentage = models.FloatField()
+    start_date = models.DateField()
+    end_date = models.DateField()
+    images = models.ImageField(upload_to="promotions/")
+    applicable_menu = models.ManyToManyField(Menu)
+
+
+    def __str__(self):
+        return self.name

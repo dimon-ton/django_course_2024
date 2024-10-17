@@ -1,0 +1,86 @@
+
+{% extends 'myapp/base.html' %}
+
+{% block title %} Order Menu {% endblock title %}
+
+{% load static %}
+{% load humanize %}
+{% block content %}
+<style>
+    body {
+        background-color: #1E1E1E; 
+        color: #FFFFFF; 
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+    h1 {
+        margin-bottom: 20px;
+    }
+    canvas {
+        background-color: #2E2E2E;
+        border-radius: 10px;
+        margin-bottom: 30px;
+    }
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/luxon@2.3.0/build/global/luxon.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.1.0"></script>
+
+
+    <div class="current-promotions grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
+        <div class="promotion border rounded-lg p-4 shadow-md flex flex-col justify-center items-center" style="background: url('') no-repeat center/cover; width: 100%; height: 200px; object-fit: cover;">
+            <h3 class="text-2xl font-bold text-center">สรุปรายการสั่งซื้อประจำเดือน</h3>
+            <br>
+            <h3 class="text-2xl font-bold text-center">ยอดสั่งซื้อรวม: {{ total_orders|intcomma }}  รายการ</h3>
+            <p class="text-green-300 text-lg mt-2 text-center">ยอดขายรวม: {{ total_sales|floatformat:2|intcomma }} บาท</p>
+            <!-- <p class="text-gray-300 mt-1 text-center">ใช้ได้ตั้งแต่วันที่: ถึงวันที่ </p> -->
+        </div>
+    </div>
+    <br>
+    <div>
+        <canvas id="salesChart" width="600" height="300"></canvas>
+    </div>
+  
+
+
+<script>
+  const ctx = document.getElementById('salesChart').getContext('2d');
+  const labels = {{ daily_sales|safe }}
+  const data = {{ daily_sales_data|safe }}
+
+
+  console.log(labels)
+  console.log(data)
+  console.log(labels.length)
+  console.log(data.length)
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'ยอดการขายตามช่วงเวลา',
+        data: data,
+        borderWidth: 2,
+        borderColor: '#ff0020',
+        backgroundColor: 'rgba(255, 100, 0, 0.1)',
+        fill: false,
+        tension: 0.2
+      }]
+    },
+    options: {
+      
+      plugins: {
+        legend: {
+          labels: {
+            color: '#FFFFFF'
+          }
+        }
+      }
+    }
+  });
+</script>
+
+
+{% endblock content %}
